@@ -1,4 +1,4 @@
-==Nginx GW Edition Docker Container==
+# Nginx GW Edition Docker Container
 
 This container is likely useful to those that are running a web gateway setup where all content is proxied through a frontend server.
 The version of NGINX here brings a few features that are likely useful.
