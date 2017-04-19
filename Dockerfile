@@ -69,7 +69,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 && git submodule update \
 && ./build.sh \
 && ./configure --prefix=/usr \
-&& make \
+&& make -j$(nproc) \
 && make install \
 && cd /docker/build \
 && echo "export NGINX_VER=$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | tail -n1)" >> /docker/env \
@@ -88,7 +88,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 && git clone https://github.com/SpiderLabs/ModSecurity-nginx.git ngx_modsecurity \
 && cd /docker/build/nginx \
 && ./configure $NGINX_CONFIG \
-&& make \
+&& make -j$(nproc) \
 && make install \
 && mkdir -p /var/lib/nginx/body && chown -R www-data:www-data /var/lib/nginx \
 && rm -r /docker/build \
