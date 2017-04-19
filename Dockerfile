@@ -92,7 +92,10 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 && make install \
 && mkdir -p /var/lib/nginx/body && chown -R www-data:www-data /var/lib/nginx \
 && rm -r /docker/build \
-&& apt-get -y purge git-core build-essential zlib1g-dev libpcre3-dev unzip wget libssl-dev automake autoconf libgeoip-dev libxml2-dev libcurl4-openssl-dev libyajl-dev liblmdb-dev $(apt-mark showauto) 
+&& apt-get -y purge git-core build-essential zlib1g-dev libpcre3-dev unzip wget libssl-dev automake autoconf libgeoip-dev libxml2-dev libcurl4-openssl-dev libyajl-dev liblmdb-dev \
+&& apt-get clean autoclean \
+&& apt-get autoremove -y \
+&& rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 ## Reset workdir
 WORKDIR /srv
