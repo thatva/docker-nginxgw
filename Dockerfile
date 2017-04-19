@@ -54,6 +54,12 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 	libcurl4-openssl-dev \
 	libyajl-dev \
 	liblmdb-dev \
+        libssl1.0.0 \
+	libcurl3 \
+	libgeoip1 \
+	libyajl2 \
+	liblmdb0 \
+	libxml2 \
 && rm -rf /var/lib/apt/lists/* \
 && echo "$!/bin/bash" > /docker/env \
 && git clone https://github.com/SpiderLabs/ModSecurity \
@@ -86,8 +92,10 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 && make install \
 && mkdir -p /var/lib/nginx/body && chown -R www-data:www-data /var/lib/nginx \
 && rm -r /docker/build \
-&& apt-get -y purge git-core build-essential zlib1g-dev libpcre3-dev unzip wget libssl-dev automake autoconf libgeoip-dev libxml2-dev libcurl4-openssl-dev libyajl-dev liblmdb-dev \
-&& apt-get remove --purge -y $(apt-mark showauto) \
+&& apt-get -y purge git-core build-essential zlib1g-dev libpcre3-dev unzip wget libssl-dev automake autoconf libgeoip-dev libxml2-dev libcurl4-openssl-dev libyajl-dev liblmdb-dev $(apt-mark showauto) 
+
+## Reset workdir
+WORKDIR /srv
 
 ## Expose ports
 EXPOSE 80 443
