@@ -1,0 +1,6 @@
+version: "3"
+services:
+  nginxgw:
+    build: .
+    image: nginxgw
+    container_name: nginxgw
