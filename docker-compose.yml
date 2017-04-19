@@ -4,3 +4,6 @@ services:
     build: .
     image: nginxgw
     container_name: nginxgw
+    ports:
+      - 80:80
+      - 443:443

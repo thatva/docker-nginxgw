@@ -3,53 +3,8 @@ SHELL ["/bin/bash", "-c"]
 
 ## Set Versions
 ENV NGINX_VER="1.11.12"
-ENV PAGESPEED_VER=""
-
-RUN apt-get update && apt-get -y install git-core build-essential zlib1g-dev libpcre3 libpcre3-dev unzip wget libssl-dev automake autoconf libtool pkg-config libgeoip-dev libxml2-dev libcurl4-openssl-dev libyajl-dev liblmdb-dev
-
-## Setup Workdir
-RUN mkdir -p /docker/build
-WORKDIR /docker/build
-RUN echo "$!/bin/bash" > /docker/env
-
-## libmodsecurity
-RUN git clone https://github.com/SpiderLabs/ModSecurity
-WORKDIR /docker/build/ModSecurity
-#RUN echo "export LIBMODSECURITY_VER=$(git tag -l --sort=-version:refname 'v*' | grep -v 'rc\|dev' | head -1)" >> /docker/env
-#RUN source /docker/env && git checkout ${LIBMODSECURITY_VER}
-RUN git checkout v3/master
-RUN git submodule init
-RUN git submodule update
-RUN ./build.sh
-RUN ./configure --prefix=/usr
-RUN make
-RUN make install
-
-## Prepare NGINX
-WORKDIR /docker/build
-RUN echo "export NGINX_VER=$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | tail -n1)" >> /docker/env
-RUN source /docker/env && wget http://nginx.org/download/nginx-${NGINX_VER}.tar.gz
-RUN tar xf nginx-*.tar.gz && rm nginx-*.tar.gz && mv nginx-* nginx
-
-## Install Modules
-RUN mkdir -p /docker/build/nginx/modules
-WORKDIR /docker/build/nginx/modules
-### nginx-testcookie module
-RUN git clone https://github.com/kyprizel/testcookie-nginx-module.git ngx_testcookie
-### ngx_pagespeed module
-RUN git clone https://github.com/pagespeed/ngx_pagespeed.git
-WORKDIR /docker/build/nginx/modules/ngx_pagespeed
-RUN echo "export PAGESPEED_VER=$(git tag -l --sort=-version:refname 'v*' | head -n1 | cut -c 2- )" >> /docker/env
-RUN source /docker/env && git checkout v${PAGESPEED_VER}
-RUN source /docker/env && wget $(scripts/format_binary_url.sh PSOL_BINARY_URL)
-RUN source /docker/env && tar -zxvf $(echo ${PAGESPEED_VER} | awk -f '-' '{print $1}')*.tar.gz
-### ModSecurity module
-WORKDIR /docker/build/nginx/modules
-RUN git clone https://github.com/SpiderLabs/ModSecurity-nginx.git ngx_modsecurity
-
-## Configure NGINX
-WORKDIR /docker/build/nginx/
-RUN ./configure --prefix=/usr \
+ENV NGINX_CONFIG="\
+		--prefix=/usr \
 		--conf-path=/etc/nginx/nginx.conf \
 		--http-log-path=/var/log/nginx/access.log \
 		--error-log-path=/var/log/nginx/error.log \
@@ -77,10 +32,62 @@ RUN ./configure --prefix=/usr \
                 --add-module=modules/ngx_modsecurity \
                 --user=www-data \
                 --group=www-data
-RUN make
-RUN make install
-## Create missing folders
-RUN mkdir -p /var/lib/nginx/body && chown -R www-data:www-data /var/lib/nginx
+
+RUN mkdir -p /docker/build
+WORKDIR /docker/build
+RUN apt-get update && apt-get -y install --no-install-recommends \
+        ca-certificates \
+	git-core \
+	build-essential \
+	zlib1g-dev \
+	libpcre3 \
+	libpcre3-dev \
+	unzip \
+	wget \
+	libssl-dev \
+	automake \
+	autoconf \
+	libtool \
+	pkg-config \
+	libgeoip-dev \
+	libxml2-dev \
+	libcurl4-openssl-dev \
+	libyajl-dev \
+	liblmdb-dev \
+&& rm -rf /var/lib/apt/lists/* \
+&& echo "$!/bin/bash" > /docker/env \
+&& git clone https://github.com/SpiderLabs/ModSecurity \
+&& cd ModSecurity \
+&& git checkout v3/master \
+&& git submodule init \
+&& git submodule update \
+&& ./build.sh \
+&& ./configure --prefix=/usr \
+&& make \
+&& make install \
+&& cd /docker/build \
+&& echo "export NGINX_VER=$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | tail -n1)" >> /docker/env \
+&& source /docker/env && wget http://nginx.org/download/nginx-${NGINX_VER}.tar.gz \
+&& tar xf nginx-*.tar.gz && rm nginx-*.tar.gz && mv nginx-* nginx \
+&& mkdir -p /docker/build/nginx/modules \
+&& cd /docker/build/nginx/modules \
+&& git clone https://github.com/kyprizel/testcookie-nginx-module.git ngx_testcookie \
+&& git clone https://github.com/pagespeed/ngx_pagespeed.git \
+&& cd /docker/build/nginx/modules/ngx_pagespeed \
+&& echo "export PAGESPEED_VER=$(git tag -l --sort=-version:refname 'v*' | head -n1 | cut -c 2- )" >> /docker/env \
+&& source /docker/env && git checkout v${PAGESPEED_VER} \
+&& source /docker/env && wget $(scripts/format_binary_url.sh PSOL_BINARY_URL) \
+&& source /docker/env && tar -zxvf $(echo ${PAGESPEED_VER} | awk -f '-' '{print $1}')*.tar.gz \
+&& cd /docker/build/nginx/modules \
+&& git clone https://github.com/SpiderLabs/ModSecurity-nginx.git ngx_modsecurity \
+&& cd /docker/build/nginx \
+&& ./configure $NGINX_CONFIG \
+&& make \
+&& make install \
+&& mkdir -p /var/lib/nginx/body && chown -R www-data:www-data /var/lib/nginx \
+&& rm -r /docker/build \
+&& apt-get -y purge git-core build-essential zlib1g-dev libpcre3-dev unzip wget libssl-dev automake autoconf libgeoip-dev libxml2-dev libcurl4-openssl-dev libyajl-dev liblmdb-dev \
+&& apt-get remove --purge -y $(apt-mark showauto) \
 
 ## Expose ports
 EXPOSE 80 443
