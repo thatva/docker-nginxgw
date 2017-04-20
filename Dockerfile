@@ -1,6 +1,9 @@
 FROM ubuntu:xenial
 SHELL ["/bin/bash", "-c"]
 
+## Config
+ENV NGINX_VER=1.12
+
 ## Set Versions
 ENV PACKAGES_BUILD="\
 	ca-certificates \
@@ -28,7 +31,6 @@ ENV PACKAGES_REQUIRED="\
         liblmdb0 \
 	pkg-config \
         libxml2"
-ENV NGINX_VER="1.11.12"
 ENV NGINX_CONFIG="\
 	--prefix=/usr \
 	--conf-path=/etc/nginx/nginx.conf \
@@ -76,8 +78,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 && make -j$(nproc) \
 && make install \
 && cd /docker/build \
-&& echo "export NGINX_VER=$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | tail -n1)" >> /docker/env \
-&& source /docker/env && wget http://nginx.org/download/nginx-${NGINX_VER}.tar.gz \
+&& wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | grep -i ${NGINX_VER}. | tail -n1).tar.gz \
 && tar xf nginx-*.tar.gz && rm nginx-*.tar.gz && mv nginx-* nginx \
 && mkdir -p /docker/build/nginx/modules \
 && cd /docker/build/nginx/modules \
