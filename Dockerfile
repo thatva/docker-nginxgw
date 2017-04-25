@@ -6,11 +6,9 @@ ENV NGINX_VER=1.12
 
 ## Set Versions
 ENV PACKAGES_BUILD="\
-	ca-certificates \
 	git-core \
 	build-essential \
 	zlib1g-dev \
-	libpcre3 \
 	libpcre3-dev \
 	unzip \
 	wget \
@@ -30,6 +28,7 @@ ENV PACKAGES_REQUIRED="\
         libyajl2 \
         liblmdb0 \
 	pkg-config \
+        ca-certificates \
         libxml2"
 ENV NGINX_CONFIG="\
 	--prefix=/usr \
