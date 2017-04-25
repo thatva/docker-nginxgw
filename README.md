@@ -8,6 +8,7 @@
 | 1.12          | ![Travis](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.12)   |
 | 1.13          | ![Travis](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.13)   |
 
+## About
 This container is likely useful to those that are running a web gateway setup where all content is proxied through a frontend server.
 The version of NGINX here brings a few features that are likely useful.
 
