@@ -2,7 +2,7 @@ FROM ubuntu:xenial
 SHELL ["/bin/bash", "-c"]
 
 ## Config
-ENV NGINX_VER=1.11
+ENV NGINX_VER=1.13.0
 
 ## Set Versions
 ENV PACKAGES_BUILD="\
@@ -77,7 +77,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 && make -j$(nproc) \
 && make install \
 && cd /docker/build \
-&& wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | grep -i ${NGINX_VER}. | tail -n1).tar.gz \
+&& wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | grep -i ${NGINX_VER} | tail -n1).tar.gz \
 && tar xf nginx-*.tar.gz && rm nginx-*.tar.gz && mv nginx-* nginx \
 && mkdir -p /docker/build/nginx/modules \
 && cd /docker/build/nginx/modules \
