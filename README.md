@@ -10,8 +10,9 @@
 
 ## Usage
 ```
-git pull alinuxninja/nginxgw:latest
+docker run -d -p 80:80 alinuxninja/nginxgw
 ```
+As NGINX is installed in the standard location, new configuration can simply be copied to /etc/nginx/nginx.conf as needed.
 
 ## About
 This container is likely useful to those that are running a web gateway setup where all content is proxied through a frontend server.
