@@ -2,7 +2,9 @@
 
 ## Build Status
 latest: ![GitHub Logo](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=latest)
+
 1.12: ![GitHub Logo](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.12)
+
 1.13: ![GitHub Logo](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.13)
 
 This container is likely useful to those that are running a web gateway setup where all content is proxied through a frontend server.
