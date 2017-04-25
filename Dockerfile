@@ -2,7 +2,7 @@ FROM ubuntu:xenial
 SHELL ["/bin/bash", "-c"]
 
 ## Config
-ENV NGINX_VER=1.12.0
+ENV NGINX_VER=1.13.0
 
 ## Set Versions
 ENV PACKAGES_BUILD="\
