@@ -2,11 +2,11 @@
 
 ## Build Status
 
-| tag           | Status                                                                        |
-| ------------- | ----------------------------------------------------------------------------- |
-| latest        | ![Travis](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=latest) |
-| 1.12          | ![Travis](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.12)   |
-| 1.13          | ![Travis](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.13)   |
+| tag           | Status                                                                                                                                  |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| latest        | [![Build Status](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=latest)](https://travis-ci.org/ALinuxNinja/docker-nginxgw) |
+| 1.12          | [![Build Status](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.12)](https://travis-ci.org/ALinuxNinja/docker-nginxgw)   |
+| 1.13          | [![Build Status](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.13)](https://travis-ci.org/ALinuxNinja/docker-nginxgw)   |
 
 ## Usage
 ```
