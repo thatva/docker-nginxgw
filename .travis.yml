@@ -9,12 +9,15 @@ env:
   - secure: XaBdIEAPpFbkIdzX/avP8ykRH6UkKAbAmK3nDDFRjzb/FYuAWh5J44968V0oM5Sew0+g1MPryjbFM1vQp8eYVHQvpOYrdtaCQdQ88WLCmvgSbWCrg5853OBqN7aUBQ2KiKhmyWTl8XgbLB40oghc8eIL7mTajLz4XBpCF4B5f1F4Hts0D0quXNhxLfO1nnHLEx4R5lHlC6O4h1U7UHumdwXl3R8A+pGFB3CbuLeY8f0l69C1criRQdZC7PZIYAYkv+Td1pyoV1hYj+wNobtlvE61p8AiZUPSo3N7l+0CMwW/fe6NX9MFpvRsZqed9Hb+m7rAhuwxswUm3fioL7O+7jsAq6ZJp/qxz02jKtkokb2PPekY7W4IVJxah5lstNhAJOs5tYRw41i98x+873fbo+t1RI1ZxaogxGbVQuAxwOPVd7TTnU4EBClYPGPMPxbP7+dKc0waOQn6/TaLgKQurPHXc1qObLiNZ7xYxCbooL7vtBMoGBt0/FhJKxm8SvicaJ7q+Xk9KhYggYLfqRs6Bsb+F/yGVmOa7td71qn7Z5UYp0Rc7LCVo70OLq18FkNrhd6zkN50ZluoiP0KLT3sK994fRjonS1+0/3BYO5zyss87sOQpEWk/S1d2LGeM+g2nocrdHnFRcsZ5/+adog2gZZXrcP6EYH6dLL+p0V11fs=
 install: true
 script:
+- if [ -z "$TRAVIS_TAG" ]; then exit 0; fi
 - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 - export REPO=alinuxninja/nginxgw
-- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; elif [ -z "$TRAVIS_TAG" ]; then echo $TRAVIS_TAG; else echo $TRAVIS_BRANCH; fi`
+- export TAG=`echo $TRAVIS_TAG;`
 - docker build -f Dockerfile -t $REPO:$COMMIT .
 - docker tag $REPO:$COMMIT $REPO:$TAG
+- docker tag $REPO:$COMMIT $REPO:latest
 - docker push $REPO
 deploy:
   on:
     tags: true
+  provider: releases
