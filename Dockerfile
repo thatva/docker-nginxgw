@@ -31,18 +31,19 @@ ENV PACKAGES_REQUIRED="\
         ca-certificates \
         libxml2"
 ENV NGINX_CONFIG="\
-	--prefix=/usr \
-	--conf-path=/etc/nginx/nginx.conf \
-	--http-log-path=/var/log/nginx/access.log \
-	--error-log-path=/var/log/nginx/error.log \
-	--lock-path=/var/lock/nginx.lock \
-	--pid-path=/run/nginx.pid \
+	--prefix=/etc/nginx \
+	--sbin-path=/usr/sbin/nginx \
 	--modules-path=/usr/lib/nginx/modules \
-	--http-client-body-temp-path=/var/lib/nginx/body \
-	--http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
-	--http-proxy-temp-path=/var/lib/nginx/proxy \
-	--http-scgi-temp-path=/var/lib/nginx/scgi \
-	--http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
+	--conf-path=/etc/nginx/nginx.conf \
+	--error-log-path=/var/log/nginx/error.log \
+	--http-log-path=/var/log/nginx/access.log \
+	--pid-path=/var/run/nginx.pid \
+	--lock-path=/var/run/nginx.lock \
+	--http-client-body-temp-path=/var/cache/nginx/client_temp \
+	--http-proxy-temp-path=/var/cache/nginx/proxy_temp \
+	--http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \
+	--http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \
+	--http-scgi-temp-path=/var/cache/nginx/scgi_temp \
 	--with-pcre-jit \
 	--with-http_ssl_module \
 	--with-http_stub_status_module \
@@ -60,6 +61,7 @@ ENV NGINX_CONFIG="\
 	--user=www-data \
 	--group=www-data"
 
+RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8
 RUN mkdir -p /docker/build
 WORKDIR /docker/build
 RUN apt-get update && apt-get -y install --no-install-recommends \
@@ -77,8 +79,23 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 && make -j$(nproc) \
 && make install \
 && cd /docker/build \
-&& wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | grep -i ${NGINX_VER} | tail -n1).tar.gz \
-&& tar xf nginx-*.tar.gz && rm nginx-*.tar.gz && mv nginx-* nginx \
+&& curl -fSL http://nginx.org/download/nginx-$NGINX_VER.tar.gz -o nginx.tar.gz \
+&& curl -fSL http://nginx.org/download/nginx-$NGINX_VER.tar.gz.asc  -o nginx.tar.gz.asc \
+&& export GNUPGHOME="$(mktemp -d)" \
+&& found=''; \
+for server in \
+	ha.pool.sks-keyservers.net \
+	hkp://keyserver.ubuntu.com:80 \
+	hkp://p80.pool.sks-keyservers.net:80 \
+	pgp.mit.edu \
+; do \
+	echo "Fetching GPG key $GPG_KEYS from $server"; \
+	gpg --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$GPG_KEYS" && found=yes && break; \
+done; \
+test -z "$found" && echo >&2 "error: failed to fetch GPG key $GPG_KEYS" && exit 1; \
+gpg --batch --verify nginx.tar.gz.asc nginx.tar.gz \
+&& rm -r "$GNUPGHOME" nginx.tar.gz.asc \
+&& tar xf nginx.tar.gz && rm nginx.tar.gz && mv nginx-$NGINX_VER nginx \
 && mkdir -p /docker/build/nginx/modules \
 && cd /docker/build/nginx/modules \
 && git clone https://github.com/kyprizel/testcookie-nginx-module.git ngx_testcookie \
@@ -91,10 +108,17 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 && cd /docker/build/nginx/modules \
 && git clone https://github.com/SpiderLabs/ModSecurity-nginx.git ngx_modsecurity \
 && cd /docker/build/nginx \
+# configure and install
 && ./configure $NGINX_CONFIG \
 && make -j$(nproc) \
 && make install \
-&& mkdir -p /var/lib/nginx/body && chown -R www-data:www-data /var/lib/nginx \
+&& rm -rf /etc/nginx/html/ \
+&& mkdir /etc/nginx/conf.d/ \
+&& strip /usr/sbin/nginx* \
+# forward request and error logs to docker log collector
+&& ln -sf /dev/stdout /var/log/nginx/access.log \
+&& ln -sf /dev/stderr /var/log/nginx/error.log
+# delete build dir and clean up
 && rm -r /docker/build \
 && apt-get -y purge $PACKAGES_BUILD \
 && apt-get clean autoclean \
