@@ -11,7 +11,7 @@ install: true
 script:
 - if [ "$TRAVIS_BRANCH" == "master" ]; then exit 0; fi
 - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-- export REPO=alinuxninja/nginxgw
+- export REPO=alinuxninja/postal
 - export TAG=`echo $TRAVIS_BRANCH;`
 - docker build -f Dockerfile -t $REPO:$COMMIT .
 - docker tag $REPO:$COMMIT $REPO:$TAG
