@@ -1,8 +1,11 @@
 FROM ubuntu:xenial
 SHELL ["/bin/bash", "-c"]
 
-## Config
+## NGINX Version
 ENV NGINX_VER=1.13.0
+
+## GPG Key
+ENV GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8
 
 ## Set Versions
 ENV PACKAGES_BUILD="\
@@ -29,6 +32,7 @@ ENV PACKAGES_REQUIRED="\
         liblmdb0 \
 	pkg-config \
         ca-certificates \
+        curl \
         libxml2"
 ENV NGINX_CONFIG="\
 	--prefix=/etc/nginx \
