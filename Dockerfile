@@ -112,16 +112,15 @@ gpg --batch --verify nginx.tar.gz.asc nginx.tar.gz \
 && cd /docker/build/nginx/modules \
 && git clone https://github.com/SpiderLabs/ModSecurity-nginx.git ngx_modsecurity \
 && cd /docker/build/nginx \
-# configure and install
 && ./configure $NGINX_CONFIG \
 && make -j$(nproc) \
 && make install \
 && rm -rf /etc/nginx/html/ \
 && mkdir /etc/nginx/conf.d/ \
 && strip /usr/sbin/nginx* \
-# forward request and error logs to docker log collector
 && ln -sf /dev/stdout /var/log/nginx/access.log \
 && ln -sf /dev/stderr /var/log/nginx/error.log
+
 # delete build dir and clean up
 && rm -r /docker/build \
 && apt-get -y purge $PACKAGES_BUILD \
