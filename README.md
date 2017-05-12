@@ -1,13 +1,5 @@
 # Nginx Gateway Docker Container
 
-## Build Status
-
-| tag           | Status                                                                                                                                           |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| latest        | [![Build Status](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=latest)](https://travis-ci.org/ALinuxNinja/docker-nginxgw/branches) |
-| 1.12          | [![Build Status](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.12)](https://travis-ci.org/ALinuxNinja/docker-nginxgw/branches)   |
-| 1.13          | [![Build Status](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.13)](https://travis-ci.org/ALinuxNinja/docker-nginxgw/branches)   |
-
 ## Usage
 ```
 docker run -d -p 80:80 alinuxninja/nginxgw
