@@ -119,9 +119,7 @@ gpg --batch --verify nginx.tar.gz.asc nginx.tar.gz \
 && mkdir /etc/nginx/conf.d/ \
 && strip /usr/sbin/nginx* \
 && ln -sf /dev/stdout /var/log/nginx/access.log \
-&& ln -sf /dev/stderr /var/log/nginx/error.log
-
-# delete build dir and clean up
+&& ln -sf /dev/stderr /var/log/nginx/error.log \
 && rm -r /docker/build \
 && apt-get -y purge $PACKAGES_BUILD \
 && apt-get clean autoclean \
