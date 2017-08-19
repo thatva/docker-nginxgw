@@ -80,7 +80,7 @@ RUN apk --no-cache add \
 && git submodule update \
 && ./build.sh \
 && ./configure --prefix=/usr \
-&& make -j$(nproc) \
+&& make -j$(getconf _NPROCESSORS_ONLN) \
 && make install \
 && cd /docker/build \
 && curl -fSL http://nginx.org/download/nginx-$NGINX_VER.tar.gz -o nginx.tar.gz \
@@ -113,7 +113,7 @@ gpg --batch --verify nginx.tar.gz.asc nginx.tar.gz \
 && git clone https://github.com/SpiderLabs/ModSecurity-nginx.git ngx_modsecurity \
 && cd /docker/build/nginx \
 && ./configure $NGINX_CONFIG \
-&& make -j$(nproc) \
+&& make -j$(getconf _NPROCESSORS_ONLN) \
 && make install \
 && rm -rf /etc/nginx/html/ \
 && mkdir /etc/nginx/conf.d/ \
