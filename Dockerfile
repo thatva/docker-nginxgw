@@ -26,6 +26,7 @@ ENV PACKAGES_BUILD="\
 	curl-dev \
 	yajl-dev \
 	gnupg \
+	gawk \
 	lmdb-dev"
 ENV PACKAGES_REQUIRED="\
         libssl1.0 \
