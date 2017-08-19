@@ -70,6 +70,9 @@ ENV NGINX_CONFIG="\
 	--user=www-data \
 	--group=www-data"
 
+## Create dirs
+RUN mkdir /docker
+
 ## Install packages
 RUN apk --no-cache add \
         $PACKAGES_BUILD \
