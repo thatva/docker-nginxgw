@@ -70,18 +70,22 @@ ENV NGINX_CONFIG="\
 	--user=www-data \
 	--group=www-data"
 
-## Set shell to bash
-SHELL ["/bin/bash", "-c"]
-
-RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8
-RUN mkdir -p /docker/build
-WORKDIR /docker/build
+## Install packages
 RUN apk --no-cache add \
         $PACKAGES_BUILD \
 	$PACKAGES_REQUIRED \
 && rm -rf /var/lib/apt/lists/* \
 && echo "$!/bin/bash" > /docker/env \
-&& git clone https://github.com/SpiderLabs/ModSecurity \
+
+## Set build dir
+RUN mkdir -p /docker/build
+WORKDIR /docker/build
+
+## Set Shell
+SHELL ["/bin/bash", "-c"]
+
+## Install Modsecurity
+RUN git clone https://github.com/SpiderLabs/ModSecurity \
 && cd ModSecurity \
 && git checkout v3/master \
 && git submodule init \
@@ -90,8 +94,9 @@ RUN apk --no-cache add \
 && ./configure --prefix=/usr \
 && make -j$(getconf _NPROCESSORS_ONLN) \
 && make install \
-&& cd /docker/build \
-&& curl -fSL http://nginx.org/download/nginx-$NGINX_VER.tar.gz -o nginx.tar.gz \
+
+## Install NGINX
+RUN curl -fSL http://nginx.org/download/nginx-$NGINX_VER.tar.gz -o nginx.tar.gz \
 && curl -fSL http://nginx.org/download/nginx-$NGINX_VER.tar.gz.asc  -o nginx.tar.gz.asc \
 && export GNUPGHOME="$(mktemp -d)" \
 && found=''; \
