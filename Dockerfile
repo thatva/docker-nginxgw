@@ -78,7 +78,7 @@ RUN apk --no-cache add \
         $PACKAGES_BUILD \
 	$PACKAGES_REQUIRED \
 && rm -rf /var/lib/apt/lists/* \
-&& echo "$!/bin/bash" > /docker/env \
+&& echo "$!/bin/bash" > /docker/env 
 
 ## Set build dir
 RUN mkdir -p /docker/build
@@ -96,7 +96,7 @@ RUN git clone https://github.com/SpiderLabs/ModSecurity \
 && ./build.sh \
 && ./configure --prefix=/usr \
 && make -j$(getconf _NPROCESSORS_ONLN) \
-&& make install \
+&& make install
 
 ## Install NGINX
 RUN curl -fSL http://nginx.org/download/nginx-$NGINX_VER.tar.gz -o nginx.tar.gz \
