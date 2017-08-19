@@ -3,11 +3,15 @@ FROM alpine:latest
 ## NGINX Version
 ENV NGINX_VER=1.13.0
 
+## Mod_PageSpeed
+ENV PAGESPEED_VER=34
+
 ## GPG Key
 ENV GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8
 
 ## Set Versions
 ENV PACKAGES_BUILD="\
+	binutils \
 	linux-headers \
 	file \
 	git \
@@ -97,6 +101,17 @@ RUN git clone https://github.com/SpiderLabs/ModSecurity \
 && ./configure --prefix=/usr \
 && make -j$(getconf _NPROCESSORS_ONLN) \
 && make install
+
+## Installl PSOL
+RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
+&& export PATH=$PATH:~/bin/depot_tools \
+&& git clone https://github.com/pagespeed/mod_pagespeed.git \
+&& gclient config https://github.com/pagespeed/mod_pagespeed.git --unmanaged --name=mod_pagespeed \
+&& cd mod_pagespeed \
+&& git checkout ${PAGESPEED_VER} \
+&& cd ../ \
+&& gclient sync --force --jobs=1 \
+&& make AR.host="$PWD/build/wrappers/ar.sh" AR.target="$PWD/build/wrappers/ar.sh" BUILDTYPE=Release mod_pagespeed_test pagespeed_automatic_test
 
 ## Install NGINX
 RUN curl -fSL http://nginx.org/download/nginx-$NGINX_VER.tar.gz -o nginx.tar.gz \
