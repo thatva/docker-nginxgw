@@ -1,5 +1,4 @@
-FROM ubuntu:xenial
-SHELL ["/bin/bash", "-c"]
+FROM alpine:latest
 
 ## NGINX Version
 ENV NGINX_VER=1.13.0
@@ -9,28 +8,29 @@ ENV GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8
 
 ## Set Versions
 ENV PACKAGES_BUILD="\
-	git-core \
-	build-essential \
-	zlib1g-dev \
-	libpcre3-dev \
-	unzip \
+	git \
+	gcc \
+	g++ \
+	make \
+	zlib-dev \
+	pcre-dev \
 	wget \
-	libssl-dev \
+	openssl-dev \
 	automake \
 	autoconf \
 	libtool \
-	libgeoip-dev \
+	geoip-dev \
 	libxml2-dev \
-	libcurl4-openssl-dev \
-	libyajl-dev \
-	liblmdb-dev"
+	curl-dev \
+	yajl-dev \
+	lmdb-dev"
 ENV PACKAGES_REQUIRED="\
-        libssl1.0.0 \
-        libcurl3 \
-        libgeoip1 \
-        libyajl2 \
-        liblmdb0 \
-	pkg-config \
+        libssl1.0 \
+        libcurl \
+        geoip \
+        yajl \
+        lmdb \
+	pkgconfig \
         ca-certificates \
         curl \
         libxml2"
@@ -68,7 +68,7 @@ ENV NGINX_CONFIG="\
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8
 RUN mkdir -p /docker/build
 WORKDIR /docker/build
-RUN apt-get update && apt-get -y install --no-install-recommends \
+RUN apk --no-cache add \
         $PACKAGES_BUILD \
 	$PACKAGES_REQUIRED \
 && rm -rf /var/lib/apt/lists/* \
