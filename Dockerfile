@@ -8,7 +8,7 @@ ENV GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8
 
 ## Set Versions
 ENV PACKAGES_BUILD="\
-	coreutils \
+	linux-headers \
 	file \
 	git \
 	gcc \
