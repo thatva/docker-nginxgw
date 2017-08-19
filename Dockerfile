@@ -25,6 +25,7 @@ ENV PACKAGES_BUILD="\
 	libxml2-dev \
 	curl-dev \
 	yajl-dev \
+	gpg \
 	lmdb-dev"
 ENV PACKAGES_REQUIRED="\
         libssl1.0 \
