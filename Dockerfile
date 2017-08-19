@@ -37,7 +37,8 @@ ENV PACKAGES_REQUIRED="\
 	pkgconfig \
         ca-certificates \
         curl \
-        libxml2"
+        libxml2 \
+	bash"
 ENV NGINX_CONFIG="\
 	--prefix=/etc/nginx \
 	--sbin-path=/usr/sbin/nginx \
@@ -68,6 +69,9 @@ ENV NGINX_CONFIG="\
 	--add-module=modules/ngx_modsecurity \
 	--user=www-data \
 	--group=www-data"
+
+## Set shell to bash
+SHELL ["/bin/bash", "-c"]
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8
 RUN mkdir -p /docker/build
