@@ -125,7 +125,7 @@ gpg --batch --verify nginx.tar.gz.asc nginx.tar.gz \
 && source /docker/env && git checkout v${PAGESPEED_VER} \
 && source /docker/env && wget $(scripts/format_binary_url.sh PSOL_BINARY_URL) \
 && source /docker/env && tar -zxvf $(echo ${PAGESPEED_VER} | awk -F '-' '{print $1}')*.tar.gz \
-&& ls
+&& ls \
 && cd /docker/build/nginx/modules \
 && git clone https://github.com/SpiderLabs/ModSecurity-nginx.git ngx_modsecurity \
 && cd /docker/build/nginx \
