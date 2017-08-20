@@ -3,5 +3,5 @@
   image_name: alinuxninja/nginxgw
   registry: https://index.docker.io/v1/
   encrypted_dockercfg_path: dockercfg.encrypted
-  tag: master
-  image_tag: latest
+  tag: 1.13
+  image_tag: 1.13
