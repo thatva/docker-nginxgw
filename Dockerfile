@@ -104,7 +104,7 @@ RUN git clone https://github.com/SpiderLabs/ModSecurity \
 
 ## Installl PSOL
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
-&& export PATH=$PATH:~/bin/depot_tools \
+&& export PATH=$PATH:/docker/build/depot_tools \
 && git clone https://github.com/pagespeed/mod_pagespeed.git \
 && gclient config https://github.com/pagespeed/mod_pagespeed.git --unmanaged --name=mod_pagespeed \
 && cd mod_pagespeed \
