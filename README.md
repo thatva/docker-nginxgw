@@ -4,7 +4,7 @@
 
 | tag           | Status                                                                        |
 | ------------- | ----------------------------------------------------------------------------- |
-| latest        | [![CircleCI](https://circleci.com/gh/ALinuxNinja/docker-nginxgw/tree/master.svg?style=svg)](https://circleci.com/gh/ALinuxNinja/docker-nginxgw/tree/master) |
+| latest        | [![Build Status](https://semaphoreci.com/api/v1/alinuxninja/docker-nginxgw/branches/master/badge.svg)](https://semaphoreci.com/alinuxninja/docker-nginxgw) |
 | 1.12          | ![Travis](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.12)   |
 | 1.13          | ![Travis](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.13)   |
 
