@@ -79,7 +79,7 @@ RUN git clone https://github.com/SpiderLabs/ModSecurity \
 && ./build.sh \
 && ./configure --prefix=/docker/install \
 && make -j$(nproc) \
-&& make install \
+&& make install
 
 ## Install NGINX
 RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | grep -i ${NGINX_VER} | tail -n1).tar.gz \
