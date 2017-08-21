@@ -71,7 +71,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 && rm -rf /var/lib/apt/lists/*
 
 ## Install ModSecurity
-&& git clone https://github.com/SpiderLabs/ModSecurity \
+RUN git clone https://github.com/SpiderLabs/ModSecurity \
 && cd ModSecurity \
 && git checkout v3/master \
 && git submodule init \
@@ -82,7 +82,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 && make install \
 
 ## Install NGINX
-&& wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | grep -i ${NGINX_VER} | tail -n1).tar.gz \
+RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | grep -i ${NGINX_VER} | tail -n1).tar.gz \
 && tar xf nginx-*.tar.gz && rm nginx-*.tar.gz && mv nginx-* nginx \
 && mkdir -p /docker/build/nginx/modules \
 && cd /docker/build/nginx/modules \
