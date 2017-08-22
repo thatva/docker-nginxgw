@@ -33,6 +33,7 @@ ENV PACKAGES_REQUIRED="\
 ENV NGINX_CONFIG="\
 	--prefix=/docker/install \
 	--with-ld-opt="-L/docker/install/lib" \
+	--with-cc-opt="-I/docker/install/include" \
 	--conf-path=/etc/nginx/nginx.conf \
 	--http-log-path=/var/log/nginx/access.log \
 	--error-log-path=/var/log/nginx/error.log \
