@@ -109,8 +109,7 @@ RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/downlo
 && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 ## Check Files
-RUN ls -la /docker/install
-RUN ls -la /docker/install/bin
+RUN ls -la /docker/install/*
 RUN ldd /docker/install/sbin/nginx
 
 ## FROM ubuntu:xenial
