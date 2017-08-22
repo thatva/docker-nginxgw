@@ -20,13 +20,13 @@ ENV PACKAGES_BUILD="\
 	libxml2-dev \
 	libcurl4-openssl-dev \
 	libyajl-dev \
+	liblmdb0 \
 	liblmdb-dev"
 ENV PACKAGES_REQUIRED="\
         libssl1.0.0 \
         libcurl3 \
         libgeoip1 \
         libyajl2 \
-        liblmdb0 \
 	pkg-config \
         ca-certificates \
         libxml2"
@@ -119,6 +119,10 @@ COPY --from=0 /usr/lib/libmodsecurity.so.3.0.0 /usr/lib/libmodsecurity.so.3.0.0
 ## Create Symlinks
 RUN cd /usr/lib \
 && ln -s libmodsecurity.so.3.0.0 libmodsecurity.so.3
+
+RUN apt-get update && apt-get -y install --no-install-recommends \
+        $PACKAGES_REQUIRED \
+&& rm -rf /var/lib/apt/lists/*
 
 ## Check NGINX
 RUN ldd /usr/sbin/nginx
