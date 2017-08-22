@@ -108,11 +108,8 @@ RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/downlo
 && apt-get autoremove -y \
 && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-## Reset workdir
-WORKDIR /srv
+## Check Files
+RUN ls -la /docker/install
+RUN ldd /docker/install/bin/nginx
 
-## Expose ports
-EXPOSE 80 443
-
-## Set options
-CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+## FROM ubuntu:xenial
