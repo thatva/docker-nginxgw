@@ -108,6 +108,15 @@ RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/downlo
 
 FROM ubuntu:xenial
 
+ENV PACKAGES_REQUIRED="\
+        libssl1.0.0 \
+        libcurl3 \
+        libgeoip1 \
+        libyajl2 \
+        pkg-config \
+        ca-certificates \
+        libxml2"
+
 ## Copy Over from other container
 COPY --from=0 /usr/sbin/nginx /usr/sbin/nginx
 COPY --from=0 /etc/nginx /etc/nginx
