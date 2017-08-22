@@ -106,9 +106,6 @@ RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/downlo
 && apt-get autoremove -y \
 && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-## Check Files
-RUN ls -la /usr/lib/nginx
-
 FROM ubuntu:xenial
 
 ## Copy Over from other container
