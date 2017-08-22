@@ -82,7 +82,7 @@ RUN git clone https://github.com/SpiderLabs/ModSecurity \
 && make install
 
 ## Install NGINX
-RUN export LD_LIBRARY_PATH=$LD_LIBRARY_PATH=/docker/install/lib \
+RUN export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/docker/install/lib \
 && wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | grep -i ${NGINX_VER} | tail -n1).tar.gz \
 && tar xf nginx-*.tar.gz && rm nginx-*.tar.gz && mv nginx-* nginx \
 && mkdir -p /docker/build/nginx/modules \
