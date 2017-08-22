@@ -110,6 +110,7 @@ RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/downlo
 
 ## Check Files
 RUN ls -la /docker/install
+RUN ls -la /docker/install/bin
 RUN ldd /docker/install/bin/nginx
 
 ## FROM ubuntu:xenial
