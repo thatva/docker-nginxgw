@@ -31,9 +31,7 @@ ENV PACKAGES_REQUIRED="\
         ca-certificates \
         libxml2"
 ENV NGINX_CONFIG="\
-	--prefix=/docker/install \
-	--with-ld-opt="-L/docker/install/lib" \
-	--with-cc-opt="-I/docker/install/include" \
+	--prefix=/usr \
 	--conf-path=/etc/nginx/nginx.conf \
 	--http-log-path=/var/log/nginx/access.log \
 	--error-log-path=/var/log/nginx/error.log \
@@ -109,7 +107,21 @@ RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/downlo
 && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 ## Check Files
-RUN ls -la /docker/install/*
-RUN ldd /docker/install/sbin/nginx
+RUN ls -la /usr/lib/nginx
 
-## FROM ubuntu:xenial
+FROM ubuntu:xenial
+
+## Copy Over from other container
+COPY --from=0 /usr/sbin/nginx /usr/sbin/nginx
+COPY --from=0 /etc/nginx /etc/nginx
+COPY --from=0 /var/log/nginx /var/log/nginx
+COPY --from=0 /var/lib/nginx /var/lib/nginx
+COPY --from=0 /usr/html /usr/html
+COPY --from=0 /usr/lib/libmodsecurity.so.3.0.0 /usr/lib/libmodsecurity.so.3.0.0
+
+## Create Symlinks
+RUN cd /usr/lib \
+&& ln -s libmodsecurity.so.3.0.0 libmodsecurity.so.3
+
+## Check NGINX
+RUN ldd /usr/sbin/nginx
