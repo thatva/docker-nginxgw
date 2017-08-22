@@ -32,6 +32,7 @@ ENV PACKAGES_REQUIRED="\
         libxml2"
 ENV NGINX_CONFIG="\
 	--prefix=/docker/install \
+	--with-ld-opt="-L/docker/install/lib" \
 	--conf-path=/etc/nginx/nginx.conf \
 	--http-log-path=/var/log/nginx/access.log \
 	--error-log-path=/var/log/nginx/error.log \
@@ -82,8 +83,7 @@ RUN git clone https://github.com/SpiderLabs/ModSecurity \
 && make install
 
 ## Install NGINX
-RUN export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/docker/install/lib \
-&& wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | grep -i ${NGINX_VER} | tail -n1).tar.gz \
+RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/download/ | sed -n 's/.*href="nginx-\([^"]*\)\.tar\.gz.*/\1/p' | sort -V | grep -i ${NGINX_VER} | tail -n1).tar.gz \
 && tar xf nginx-*.tar.gz && rm nginx-*.tar.gz && mv nginx-* nginx \
 && mkdir -p /docker/build/nginx/modules \
 && cd /docker/build/nginx/modules \
