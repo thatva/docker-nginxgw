@@ -77,7 +77,7 @@ RUN git clone https://github.com/SpiderLabs/ModSecurity \
 && git submodule init \
 && git submodule update \
 && ./build.sh \
-&& ./configure --prefix=/docker/install \
+&& ./configure --prefix=/usr \
 && make -j$(nproc) \
 && make install
 
