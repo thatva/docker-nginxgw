@@ -60,6 +60,18 @@ RUN mkdir -p /docker/build
 RUN apt-get update && apt-get -y install --no-install-recommends $PACKAGES_BUILD \
 && rm -rf /var/lib/apt/lists/*
 
+## Install Chrome Depot Tools
+RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /docker/bin
+
+## Mod_Pagespeed Building
+WORKDIR /docker/build
+RUN git clone -b --recursive https://github.com/pagespeed/mod_pagespeed.git
+&& cd mod_pagespeed \
+&& python build/gyp_chromium --depth=. \
+&& make BUILDTYPE=Release mod_pagespeed_test pagespeed_automatic_test \
+&& cd src \
+&& make BUILDTYPE=Release
+
 ## ModSecurity: Setup
 WORKDIR /docker/build
 RUN git clone https://github.com/SpiderLabs/ModSecurity \
