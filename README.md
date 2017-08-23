@@ -1,12 +1,4 @@
-# Nginx Gateway Docker Container
-
-## Build Status
-
-| tag           | Status                                                                        |
-| ------------- | ----------------------------------------------------------------------------- |
-| latest        | [![Build Status](https://semaphoreci.com/api/v1/alinuxninja/docker-nginxgw/branches/master/badge.svg)](https://semaphoreci.com/alinuxninja/docker-nginxgw) |
-| 1.12          | ![Travis](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.12)   |
-| 1.13          | ![Travis](https://travis-ci.org/ALinuxNinja/docker-nginxgw.svg?branch=1.13)   |
+[![Build Status](https://semaphoreci.com/api/v1/alinuxninja/docker-nginxgw/branches/master/badge.svg)](https://semaphoreci.com/alinuxninja/docker-nginxgw)
 
 ## About
 This container is likely useful to those that are running a web gateway setup where all content is proxied through a frontend server.
