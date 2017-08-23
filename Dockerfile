@@ -133,8 +133,12 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
         $PACKAGES_REQUIRED \
 && rm -rf /var/lib/apt/lists/*
 
+## Copy Config
+ADD conf/nginx.conf /etc/nginx/nginx.conf
+ADD conf/default.conf /etc/nginx/conf.d/default.conf
+
 ## Check dirs
-RUN cat /etc/nginx/nginx.conf
+RUN ls /etc/nginx
 
 ## Check NGINX
 RUN ldd /usr/sbin/nginx
