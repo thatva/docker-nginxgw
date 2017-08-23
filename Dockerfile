@@ -122,7 +122,7 @@ COPY --from=0 /usr/sbin/nginx /usr/sbin/nginx
 COPY --from=0 /etc/nginx /etc/nginx
 COPY --from=0 /var/log/nginx /var/log/nginx
 COPY --from=0 /var/lib/nginx /var/lib/nginx
-COPY --from=0 /usr/html /usr/html
+COPY --from=0 /usr/html /var/www/html
 COPY --from=0 /usr/lib/libmodsecurity.so.3.0.0 /usr/lib/libmodsecurity.so.3.0.0
 
 ## Create Symlinks
