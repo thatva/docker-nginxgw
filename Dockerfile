@@ -66,6 +66,7 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /
 
 ## Mod_Pagespeed Building
 WORKDIR /docker/build
+RUN git config --global http.postBuffer 1048576000
 RUN git clone -b master --recursive https://github.com/pagespeed/mod_pagespeed.git \
 && cd mod_pagespeed \
 && python build/gyp_chromium --depth=. \
