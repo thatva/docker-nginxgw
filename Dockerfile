@@ -70,6 +70,7 @@ WORKDIR /docker/build
 RUN git config --global http.postBuffer 1048576000
 RUN git clone -b master --recursive https://github.com/pagespeed/mod_pagespeed.git \
 && cd mod_pagespeed \
+&& export PATH=$PATH:/docker/bin \
 && python build/gyp_chromium --depth=. \
 && make BUILDTYPE=Release mod_pagespeed_test pagespeed_automatic_test \
 && cd src \
