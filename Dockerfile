@@ -137,8 +137,12 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 ADD conf/nginx.conf /etc/nginx/nginx.conf
 ADD conf/default.conf /etc/nginx/conf.d/default.conf
 
-## Check dirs
-RUN ls /etc/nginx
-
 ## Check NGINX
 RUN ldd /usr/sbin/nginx
+
+## Expose
+EXPOSE 80
+EXPOSE 443
+
+ENTRYPOINT ["/usr/sbin/nginx"]
+CMD [ "-g", "daemon off;"]
