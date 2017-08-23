@@ -4,6 +4,18 @@ SHELL ["/bin/bash", "-c"]
 ## Config
 ENV NGINX_VER=1.13.0
 
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="nginxgw" \
+      org.label-schema.description="A Custom NGINX build suitable for use as a front-end proxy" \
+      org.label-schema.url="https://hub.docker.com/r/alinuxninja/nginxgw/" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/ALinuxNinja/docker-nginxgw/" \
+      org.label-schema.vendor="ALinuxNinja" \
+      org.label-schema.version=$NGINX_VER \
+      org.label-schema.schema-version="1.0"
+
 ## Set Versions
 ENV PACKAGES_BUILD="\
 	git-core \
