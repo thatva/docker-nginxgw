@@ -149,8 +149,8 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 ADD conf/nginx.conf /etc/nginx/nginx.conf
 ADD conf/default.conf /etc/nginx/conf.d/default.conf
 
-## Check NGINX
-RUN ldd /usr/sbin/nginx
+## Strip NGINX
+RUN strip /usr/sbin/nginx
 
 ## Expose
 EXPOSE 80
