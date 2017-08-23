@@ -1,4 +1,4 @@
-[![Build Status](https://semaphoreci.com/api/v1/alinuxninja/docker-nginxgw/branches/master/badge.svg)](https://semaphoreci.com/alinuxninja/docker-nginxgw)
+[![Build Status](https://semaphoreci.com/api/v1/alinuxninja/docker-nginxgw/branches/master/badge.svg)](https://semaphoreci.com/alinuxninja/docker-nginxgw) [![](https://images.microbadger.com/badges/image/alinuxninja/nginxgw.svg)](https://microbadger.com/images/alinuxninja/nginxgw)
 
 ## About
 This container is likely useful to those that are running a web gateway setup where all content is proxied through a frontend server.
