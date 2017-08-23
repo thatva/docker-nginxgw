@@ -20,7 +20,7 @@ ENV PACKAGES_BUILD="\
 	libcurl4-openssl-dev \
 	libyajl-dev \
 	liblmdb0 \
-	liblmdb-dev
+	liblmdb-dev \
 	ca-certificates"
 
 ENV NGINX_CONFIG="\
