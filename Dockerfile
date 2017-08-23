@@ -100,11 +100,11 @@ RUN cd modules/ngx_pagespeed \
 && patch -p1 /patches/ngx_pagespeed-1451.diff
 
 ## NGINX: Configure Build
-RUN ./configure $NGINX_CONFIG \
+RUN ./configure $NGINX_CONFIG
 
 ## NGINX: Build & Install
 RUN make -j$(nproc) \
-&& make install \
+&& make install
 
 ## NGINX: Create missing dirs and cleanup
 RUN mkdir -p /var/lib/nginx/body && chown -R www-data:www-data /var/lib/nginx \
