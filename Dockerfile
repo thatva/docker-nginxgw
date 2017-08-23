@@ -99,7 +99,8 @@ RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/downlo
 && make -j$(nproc) \
 && make install \
 && mkdir -p /var/lib/nginx/body && chown -R www-data:www-data /var/lib/nginx \
-&& strip /usr/sbin/nginx
+&& strip /usr/sbin/nginx \
+&& strip /usr/lib/libmodsecurity.so.3.0.0
 
 FROM ubuntu:xenial
 
