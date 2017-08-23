@@ -21,7 +21,8 @@ ENV PACKAGES_BUILD="\
 	libyajl-dev \
 	liblmdb0 \
 	liblmdb-dev \
-	ca-certificates"
+	ca-certificates \
+	python"
 
 ENV NGINX_CONFIG="\
 	--prefix=/usr \
