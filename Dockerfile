@@ -87,18 +87,11 @@ RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/downlo
 && git clone https://github.com/kyprizel/testcookie-nginx-module.git ngx_testcookie \
 && git clone https://github.com/pagespeed/ngx_pagespeed.git \
 && cd /docker/build/nginx/modules/ngx_pagespeed \
-&& echo "export PAGESPEED_VER=$(git tag -l --sort=-version:refname 'v*' | head -n1 | cut -c 2- )" >> /docker/env \
-&& source /docker/env && git checkout v${PAGESPEED_VER} \
-&& source /docker/env && wget $(scripts/format_binary_url.sh PSOL_BINARY_URL) \
-&& source /docker/env && tar -zxvf $(echo ${PAGESPEED_VER} | awk -F '-' '{print $1}')*.tar.gz \
+&& wget $(scripts/format_binary_url.sh PSOL_BINARY_URL) \
+&& tar -zxvf *.tar.gz \
 && cd /docker/build/nginx/modules \
 && git clone https://github.com/SpiderLabs/ModSecurity-nginx.git ngx_modsecurity
 WORKDIR /docker/build/nginx
-
-## NGINX: Patch ngx_pagespeed (https://github.com/pagespeed/ngx_pagespeed/issues/1451)
-RUN cd modules/ngx_pagespeed \
-&& patch -p1 /patches/ngx_pagespeed-1451.diff \
-&& patch -p1 /patches/ngx_pagespeed-1453.diff
 
 ## NGINX: Configure Build
 RUN ./configure $NGINX_CONFIG
