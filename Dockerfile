@@ -121,8 +121,6 @@ ENV PACKAGES_REQUIRED="\
         libcurl3 \
         libgeoip1 \
         libyajl2 \
-        pkg-config \
-        ca-certificates \
         libxml2"
 
 ## Copy Over from other container
