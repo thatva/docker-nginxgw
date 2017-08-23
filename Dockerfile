@@ -97,7 +97,8 @@ WORKDIR /docker/build/nginx
 
 ## NGINX: Patch ngx_pagespeed (https://github.com/pagespeed/ngx_pagespeed/issues/1451)
 RUN cd modules/ngx_pagespeed \
-&& patch -p1 /patches/ngx_pagespeed-1451.diff
+&& patch -p1 /patches/ngx_pagespeed-1451.diff \
+&& patch -p1 /patches/ngx_pagespeed-1453.diff
 
 ## NGINX: Configure Build
 RUN ./configure $NGINX_CONFIG
