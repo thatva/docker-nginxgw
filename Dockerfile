@@ -22,6 +22,7 @@ ENV PACKAGES_BUILD="\
 	liblmdb0 \
 	liblmdb-dev \
 	ca-certificates \
+	curl \
 	python"
 
 ENV NGINX_CONFIG="\
