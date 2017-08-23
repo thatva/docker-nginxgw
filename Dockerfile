@@ -1,20 +1,7 @@
 FROM ubuntu:xenial
 SHELL ["/bin/bash", "-c"]
 
-## Config
-ENV NGINX_VER=1.13.0
-
-ARG BUILD_DATE
-ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.name="nginxgw" \
-      org.label-schema.description="A Custom NGINX build suitable for use as a front-end proxy" \
-      org.label-schema.url="https://hub.docker.com/r/alinuxninja/nginxgw/" \
-      org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/ALinuxNinja/docker-nginxgw/" \
-      org.label-schema.vendor="ALinuxNinja" \
-      org.label-schema.version=$NGINX_VER \
-      org.label-schema.schema-version="1.0"
+ARG NGINX_VER
 
 ## Set Versions
 ENV PACKAGES_BUILD="\
@@ -115,6 +102,19 @@ RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/downlo
 && strip /usr/sbin/nginx
 
 FROM ubuntu:xenial
+
+ARG BUILD_DATE
+ARG VCS_REF
+ARG NGINX_VER
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="nginxgw" \
+      org.label-schema.description="A Custom NGINX build suitable for use as a front-end proxy" \
+      org.label-schema.url="https://hub.docker.com/r/alinuxninja/nginxgw/" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/ALinuxNinja/docker-nginxgw/" \
+      org.label-schema.vendor="ALinuxNinja" \
+      org.label-schema.version=$NGINX_VER \
+      org.label-schema.schema-version="1.0"
 
 ENV PACKAGES_REQUIRED="\
         libssl1.0.0 \
