@@ -1,0 +1,7 @@
+#!/bin/bash
+
+docker run -d --name nginx-mainline -p 8081:80 alinuxninja/nginxgw:mainline
+sleep 10
+docker logs nginx-mainline
+curl -L -I --fail http://localhost:8081
+docker rm -f nginx-mainline
