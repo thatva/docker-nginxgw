@@ -112,11 +112,7 @@ RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/downlo
 && make -j$(nproc) \
 && make install \
 && mkdir -p /var/lib/nginx/body && chown -R www-data:www-data /var/lib/nginx \
-&& rm -r /docker/build \
-&& apt-get -y purge $PACKAGES_BUILD \
-&& apt-get clean autoclean \
-&& apt-get autoremove -y \
-&& rm -rf /var/lib/{apt,dpkg,cache,log}/
+&& strip /usr/sbin/nginx
 
 FROM ubuntu:xenial
 
@@ -148,9 +144,6 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 ## Copy Config
 ADD conf/nginx.conf /etc/nginx/nginx.conf
 ADD conf/default.conf /etc/nginx/conf.d/default.conf
-
-## Strip NGINX
-RUN strip /usr/sbin/nginx
 
 ## Expose
 EXPOSE 80
