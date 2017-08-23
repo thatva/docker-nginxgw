@@ -55,7 +55,6 @@ ENV NGINX_CONFIG="\
 
 ## Create Folders
 RUN mkdir -p /docker/build
-ADD patches /patches
 
 ## Install Packages
 RUN apt-get update && apt-get -y install --no-install-recommends $PACKAGES_BUILD \
