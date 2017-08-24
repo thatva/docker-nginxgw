@@ -76,7 +76,7 @@ RUN git clone -b master --recursive https://github.com/pagespeed/mod_pagespeed.g
 && export PATH=$PATH:/docker/bin \
 && python build/gyp_chromium --depth=. \
 && make BUILDTYPE=Release mod_pagespeed_test pagespeed_automatic_test \
-&& cd src \
+&& cd /docker/build/mod_pagespeed/src \
 && make BUILDTYPE=Release
 
 ## ModSecurity: Setup
