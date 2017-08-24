@@ -24,6 +24,8 @@ ENV PACKAGES_BUILD="\
 	ca-certificates \
 	curl \
 	gperf \
+	uuid-dev \
+	libuuid1 \
 	python"
 
 ENV NGINX_CONFIG="\
