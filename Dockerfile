@@ -61,15 +61,15 @@ ENV NGINX_CONFIG="\
 ## Create Folders
 RUN mkdir -p /docker/build /docker/build/mod_pagespeed
 
-## Set Git config
-RUN git config --global http.postBuffer 1048576000
-
 ## Add patches
 ADD patch /patch
 
 ## Install Packages
 RUN apt-get update && apt-get -y install --no-install-recommends $PACKAGES_BUILD \
 && rm -rf /var/lib/apt/lists/*
+
+## Set Git config
+RUN git config --global http.postBuffer 1048576000
 
 ## Install Chrome Depot Tools
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /docker/bin
