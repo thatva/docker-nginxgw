@@ -59,7 +59,10 @@ ENV NGINX_CONFIG="\
 	--group=www-data"
 
 ## Create Folders
-RUN mkdir -p /docker/build
+RUN mkdir -p /docker/build /docker/build/mod_pagespeed
+
+## Set Git config
+RUN git config --global http.postBuffer 1048576000
 
 ## Add patches
 ADD patch /patch
@@ -72,25 +75,19 @@ RUN apt-get update && apt-get -y install --no-install-recommends $PACKAGES_BUILD
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /docker/bin
 
 ## Get mod_pagespeed
-WORKDIR /docker/build
-RUN git config --global http.postBuffer 1048576000
-RUN git clone -b 1.11.33.2 https://github.com/pagespeed/mod_pagespeed.git
 WORKDIR /docker/build/mod_pagespeed
-#RUN git rm --cached third_party/closure_library
-#RUN git submodule update --init --recursive
+RUN export PATH=$PATH:/docker/bin && gclient config https://github.com/pagespeed/mod_pagespeed.git --unmanaged --name=src
+RUN git clone https://github.com/pagespeed/mod_pagespeed.git src
+WORKDIR /docker/build/mod_pagespeed/src
+RUN git checkout latest-stable && cd .. && gclient sync --force --jobs=1
 
 ## Patch mod_pagespeed
 RUN patch -p1 /patch/mod_pagespeed-1453.diff
 RUN patch -p1 /patch/mod_pagespeed-1458.diff 
 
 ## Build mod_pagespeed
-RUN export PATH=$PATH:/docker/bin \
-&& python build/gyp_chromium --depth=. \
-&& make BUILDTYPE=Release mod_pagespeed_test pagespeed_automatic_test \
-&& cd /docker/build/mod_pagespeed \
-&& make BUILDTYPE=Release \
-&& cd /docker/build/mod_pagespeed/src/pagespeed/automatic \
-&& make BUILDTYPE=Release -C ../../pagespeed/automatic AR.host="$PWD/../../build/wrappers/ar.sh" AR.target="$PWD/../../build/wrappers/ar.sh" all
+RUN make AR.host=`pwd`/build/wrappers/ar.sh AR.target=`pwd`/build/wrappers/ar.sh \
+      BUILDTYPE=Release mod_pagespeed_test pagespeed_automatic_test
 
 ## ModSecurity: Setup
 WORKDIR /docker/build
