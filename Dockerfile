@@ -77,7 +77,9 @@ RUN git clone -b master --recursive https://github.com/pagespeed/mod_pagespeed.g
 && python build/gyp_chromium --depth=. \
 && make BUILDTYPE=Release mod_pagespeed_test pagespeed_automatic_test \
 && cd /docker/build/mod_pagespeed \
-&& make BUILDTYPE=Release
+&& make BUILDTYPE=Release \
+&& cd /docker/build/mod_pagespeed/src/pagespeed/automatic
+&& make BUILDTYPE=Release -C ../../pagespeed/automatic AR.host="$PWD/../../build/wrappers/ar.sh" AR.target="$PWD/../../build/wrappers/ar.sh" all
 
 ## ModSecurity: Setup
 WORKDIR /docker/build
