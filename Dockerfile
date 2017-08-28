@@ -74,7 +74,7 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /
 ## Get mod_pagespeed
 WORKDIR /docker/build
 RUN git config --global http.postBuffer 1048576000
-RUN git clone -b 1.11.33.2 --recursive https://github.com/pagespeed/mod_pagespeed.git \
+RUN git clone -b 1.11.33.2 --recursive https://github.com/pagespeed/mod_pagespeed.git
 WORKDIR /docker/build/mod_pagespeed
 
 ## Patch mod_pagespeed
