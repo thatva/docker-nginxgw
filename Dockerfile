@@ -76,12 +76,14 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /
 
 ## Get mod_pagespeed
 WORKDIR /docker/build/mod_pagespeed
-RUN export PATH=$PATH:/docker/bin && gclient config https://github.com/pagespeed/mod_pagespeed.git --unmanaged --name=src
 RUN git clone https://github.com/pagespeed/mod_pagespeed.git src
+RUN /docker/bin/gclient config https://github.com/pagespeed/mod_pagespeed.git --unmanaged --name=src
 WORKDIR /docker/build/mod_pagespeed/src
-RUN git checkout latest-stable 
-RUN export PATH=$PATH:/docker/bin && cd .. && gclient sync --force --jobs=1
+RUN git checkout latest-stable
+WORKDIR /docker/build/mod_pagespeed
+RUN /docker/bin/gclient sync --force --jobs=1
 RUN find . -name Makefile -ls
+WORKDIR /docker/build/mod_pagespeed/src
 
 ## Patch mod_pagespeed
 RUN patch -p1 /patch/mod_pagespeed-1453.diff
