@@ -81,7 +81,7 @@ RUN /docker/bin/gclient config https://github.com/pagespeed/mod_pagespeed.git --
 WORKDIR /docker/build/mod_pagespeed/src
 RUN git checkout latest-stable
 WORKDIR /docker/build/mod_pagespeed
-RUN /docker/bin/gclient sync --force --jobs=1
+RUN /docker/bin/gclient sync --force --jobs=1 -verbose
 RUN find . -name Makefile -ls
 WORKDIR /docker/build/mod_pagespeed/src
 
