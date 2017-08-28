@@ -61,6 +61,9 @@ ENV NGINX_CONFIG="\
 ## Create Folders
 RUN mkdir -p /docker/build
 
+## Add patches
+ADD patch /patch
+
 ## Install Packages
 RUN apt-get update && apt-get -y install --no-install-recommends $PACKAGES_BUILD \
 && rm -rf /var/lib/apt/lists/*
@@ -73,12 +76,15 @@ WORKDIR /docker/build
 RUN git config --global http.postBuffer 1048576000
 RUN git clone -b master --recursive https://github.com/pagespeed/mod_pagespeed.git \
 && cd mod_pagespeed \
+&& git checkout 1.11.33.2 \
+&& patch -p1 /patch/mod_pagespeed-1453.diff \
+&& patch -p1 /patch/mod_pagespeed-1458.diff \
 && export PATH=$PATH:/docker/bin \
 && python build/gyp_chromium --depth=. \
 && make BUILDTYPE=Release mod_pagespeed_test pagespeed_automatic_test \
 && cd /docker/build/mod_pagespeed \
 && make BUILDTYPE=Release \
-&& cd /docker/build/mod_pagespeed/src/pagespeed/automatic
+&& cd /docker/build/mod_pagespeed/src/pagespeed/automatic \
 && make BUILDTYPE=Release -C ../../pagespeed/automatic AR.host="$PWD/../../build/wrappers/ar.sh" AR.target="$PWD/../../build/wrappers/ar.sh" all
 
 ## ModSecurity: Setup
