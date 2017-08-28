@@ -77,7 +77,7 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /
 ## Get mod_pagespeed
 WORKDIR /docker/build/mod_pagespeed
 RUN git clone https://github.com/pagespeed/mod_pagespeed.git src
-RUN /docker/bin/gclient config https://github.com/pagespeed/mod_pagespeed.git --unmanaged --name=src
+RUN /docker/bin/gclient config https://github.com/pagespeed/mod_pagespeed.git --name=src
 WORKDIR /docker/build/mod_pagespeed/src
 RUN git checkout latest-stable
 WORKDIR /docker/build/mod_pagespeed
