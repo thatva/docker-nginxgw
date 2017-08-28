@@ -88,7 +88,6 @@ RUN patch -p1 /patch/mod_pagespeed-1453.diff
 RUN patch -p1 /patch/mod_pagespeed-1458.diff 
 
 ## Build mod_pagespeed
-    make AR.host=`pwd`/build/wrappers/ar.sh AR.target=`pwd`/build/wrappers/ar.sh BUILDTYPE=Release
 RUN make AR.host=`pwd`/build/wrappers/ar.sh AR.target=`pwd`/build/wrappers/ar.sh \
       BUILDTYPE=Release 
 
