@@ -79,7 +79,8 @@ WORKDIR /docker/build/mod_pagespeed
 RUN export PATH=$PATH:/docker/bin && gclient config https://github.com/pagespeed/mod_pagespeed.git --unmanaged --name=src
 RUN git clone https://github.com/pagespeed/mod_pagespeed.git src
 WORKDIR /docker/build/mod_pagespeed/src
-RUN export PATH=$PATH:/docker/bin && git checkout latest-stable && cd .. && gclient sync --force --jobs=1
+RUN git checkout latest-stable 
+RUN export PATH=$PATH:/docker/bin && cd .. && gclient sync --force --jobs=1
 
 ## Patch mod_pagespeed
 RUN patch -p1 /patch/mod_pagespeed-1453.diff
