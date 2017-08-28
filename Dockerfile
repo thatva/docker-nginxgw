@@ -76,8 +76,8 @@ WORKDIR /docker/build
 RUN git config --global http.postBuffer 1048576000
 RUN git clone -b 1.11.33.2 https://github.com/pagespeed/mod_pagespeed.git
 WORKDIR /docker/build/mod_pagespeed
-RUN git rm --cached third_party/closure_library
-RUN git submodule update --init --recursive
+#RUN git rm --cached third_party/closure_library
+#RUN git submodule update --init --recursive
 
 ## Patch mod_pagespeed
 RUN patch -p1 /patch/mod_pagespeed-1453.diff \
