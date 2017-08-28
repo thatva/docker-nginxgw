@@ -88,7 +88,7 @@ RUN patch -p1 /patch/mod_pagespeed-1458.diff
 
 ## Build mod_pagespeed
 RUN make AR.host=`pwd`/build/wrappers/ar.sh AR.target=`pwd`/build/wrappers/ar.sh \
-      BUILDTYPE=Release mod_pagespeed_test pagespeed_automatic_test
+      BUILDTYPE=Release 
 
 ## ModSecurity: Setup
 WORKDIR /docker/build
