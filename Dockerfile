@@ -71,15 +71,18 @@ RUN apt-get update && apt-get -y install --no-install-recommends $PACKAGES_BUILD
 ## Install Chrome Depot Tools
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /docker/bin
 
-## Mod_Pagespeed Building
+## Get mod_pagespeed
 WORKDIR /docker/build
 RUN git config --global http.postBuffer 1048576000
-RUN git clone -b master --recursive https://github.com/pagespeed/mod_pagespeed.git \
-&& cd mod_pagespeed \
-&& git checkout 1.11.33.2 \
-&& patch -p1 /patch/mod_pagespeed-1453.diff \
-&& patch -p1 /patch/mod_pagespeed-1458.diff \
-&& export PATH=$PATH:/docker/bin \
+RUN git clone -b 1.11.33.2 --recursive https://github.com/pagespeed/mod_pagespeed.git \
+WORKDIR /docker/build/mod_pagespeed
+
+## Patch mod_pagespeed
+RUN patch -p1 /patch/mod_pagespeed-1453.diff \
+RUN patch -p1 /patch/mod_pagespeed-1458.diff 
+
+## Build mod_pagespeed
+RUN export PATH=$PATH:/docker/bin \
 && python build/gyp_chromium --depth=. \
 && make BUILDTYPE=Release mod_pagespeed_test pagespeed_automatic_test \
 && cd /docker/build/mod_pagespeed \
