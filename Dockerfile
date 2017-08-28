@@ -80,7 +80,7 @@ WORKDIR /docker/build/mod_pagespeed
 #RUN git submodule update --init --recursive
 
 ## Patch mod_pagespeed
-RUN patch -p1 /patch/mod_pagespeed-1453.diff \
+RUN patch -p1 /patch/mod_pagespeed-1453.diff
 RUN patch -p1 /patch/mod_pagespeed-1458.diff 
 
 ## Build mod_pagespeed
