@@ -26,6 +26,7 @@ ENV PACKAGES_BUILD="\
 	gperf \
 	uuid-dev \
 	libuuid1 \
+	lsb-release \
 	python"
 
 ENV NGINX_CONFIG="\
