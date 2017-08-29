@@ -78,7 +78,8 @@ RUN git clone -b latest-stable --recursive https://github.com/pagespeed/mod_page
 WORKDIR /docker/build/mod_pagespeed
 RUN patch -p1 /patch/mod_pagespeed-1453.diff
 RUN patch -p1 /patch/mod_pagespeed-1458.diff
-RUN install/build_psol.sh
+RUN mkdir -p log
+RUN install/build_psol.sh --skip_tests --skip_packaging
 
 ## ModSecurity: Setup
 WORKDIR /docker/build
