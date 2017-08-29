@@ -74,12 +74,15 @@ RUN git config --global http.postBuffer 1048576000
 
 ## Build PSOL
 WORKDIR /docker/build
-RUN git clone -b latest-beta --recursive https://github.com/pagespeed/mod_pagespeed.git
+RUN git clone -b latest-stable --recursive https://github.com/pagespeed/mod_pagespeed.git
 WORKDIR /docker/build/mod_pagespeed
 RUN patch -p1 /patch/mod_pagespeed-1453.diff
 RUN patch -p1 /patch/mod_pagespeed-1458.diff
-RUN mkdir -p log
-RUN install/build_psol.sh --skip_tests --skip_packaging
+RUN python build/gyp_chromium --depth=.
+RUN make BUILDTYPE=Release mod_pagespeed_test pagespeed_automatic_test
+RUN ./out/Release/mod_pagespeed_test
+RUN ./out/Release/pagespeed_automatic_test
+RUN make AR.host=`pwd`/build/wrappers/ar.sh AR.target=`pwd`/build/wrappers/ar.sh BUILDTYPE=Release
 
 ## ModSecurity: Setup
 WORKDIR /docker/build
