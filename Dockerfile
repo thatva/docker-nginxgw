@@ -72,37 +72,13 @@ RUN apt-get update && apt-get -y install --no-install-recommends $PACKAGES_BUILD
 ## Set Git config
 RUN git config --global http.postBuffer 1048576000
 
-## Install Chrome Depot Tools
-RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /docker/bin
-
-## Get mod_pagespeed
-WORKDIR /docker/build/mod_pagespeed
-RUN git clone https://github.com/pagespeed/mod_pagespeed.git src
-RUN /docker/bin/gclient config https://github.com/pagespeed/mod_pagespeed.git --name=src
-WORKDIR /docker/build/mod_pagespeed/src
-RUN git checkout latest-stable
-WORKDIR /docker/build/mod_pagespeed
-RUN /docker/bin/gclient sync --force --jobs=1 --verbose
-RUN find . -name Makefile -ls
-WORKDIR /docker/build/mod_pagespeed/src
-
-## Patch mod_pagespeed
-RUN patch -p1 /patch/mod_pagespeed-1453.diff
-RUN patch -p1 /patch/mod_pagespeed-1458.diff 
-
-## Build mod_pagespeed
-WORKDIR /docker/build/mod_pagespeed/src/install
-RUN make AR.host="$PWD/build/wrappers/ar.sh" \
-       AR.target="$PWD/build/wrappers/ar.sh" \
-       BUILDTYPE=Release \
-       mod_pagespeed_test
-
 ## Build PSOL
-WORKDIR /docker/build/mod_pagespeed/src/pagespeed/automatic
-RUN make BUILDTYPE=Release \
-       AR.host="$PWD/../../../build/wrappers/ar.sh" \
-       AR.target="$PWD/../../../build/wrappers/ar.sh" \
-       all
+WORKDIR /docker/build
+RUN git clone -b latest-stable --recursive https://github.com/pagespeed/mod_pagespeed.git
+WORKDIR /docker/build/mod_pagespeed
+RUN patch -p1 /patch/mod_pagespeed-1453.diff
+RUN patch -p1 /patch/mod_pagespeed-1458.diff
+RUN install/build_psol.sh
 
 ## ModSecurity: Setup
 WORKDIR /docker/build
