@@ -92,8 +92,10 @@ RUN patch -p1 /patch/mod_pagespeed-1458.diff
 
 ## Build mod_pagespeed
 WORKDIR /docker/build/mod_pagespeed/src/install
-RUN make AR.host=`pwd`/build/wrappers/ar.sh AR.target=`pwd`/build/wrappers/ar.sh \
-      BUILDTYPE=Release
+RUN make AR.host="$PWD/build/wrappers/ar.sh" \
+       AR.target="$PWD/build/wrappers/ar.sh" \
+       BUILDTYPE=Release \
+       mod_pagespeed_test pagespeed_automatic_test
 
 ## Build PSOL
 WORKDIR /docker/build/mod_pagespeed/src/pagespeed/automatic
