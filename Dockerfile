@@ -95,14 +95,13 @@ WORKDIR /docker/build/mod_pagespeed/src/install
 RUN make AR.host="$PWD/build/wrappers/ar.sh" \
        AR.target="$PWD/build/wrappers/ar.sh" \
        BUILDTYPE=Release \
-       mod_pagespeed_test pagespeed_automatic_test
+       mod_pagespeed_test
 
 ## Build PSOL
 WORKDIR /docker/build/mod_pagespeed/src/pagespeed/automatic
 RUN make BUILDTYPE=Release \
-       -C ../../pagespeed/automatic \
-       AR.host="$PWD/../../build/wrappers/ar.sh" \
-       AR.target="$PWD/../../build/wrappers/ar.sh" \
+       AR.host="$PWD/../../../build/wrappers/ar.sh" \
+       AR.target="$PWD/../../../build/wrappers/ar.sh" \
        all
 
 ## ModSecurity: Setup
