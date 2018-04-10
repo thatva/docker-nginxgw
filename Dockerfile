@@ -93,8 +93,6 @@ RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/downlo
 && tar xf nginx-*.tar.gz && rm nginx-*.tar.gz && mv nginx-* nginx \
 && mkdir -p /docker/build/nginx/modules \
 && cd /docker/build/nginx/modules \
-&& tar -zxvf *.tar.gz \
-&& cd /docker/build/nginx/modules \
 && git clone https://github.com/SpiderLabs/ModSecurity-nginx.git ngx_modsecurity
 WORKDIR /docker/build/nginx
 
