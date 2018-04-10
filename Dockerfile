@@ -53,14 +53,12 @@ ENV NGINX_CONFIG="\
 	--with-http_gzip_static_module \
 	--without-http_split_clients_module \
 	--without-http_userid_module \
-	--add-module=modules/ngx_testcookie \
-	--add-module=modules/ngx_pagespeed \
 	--add-module=modules/ngx_modsecurity \
 	--user=www-data \
 	--group=www-data"
 
 ## Create Folders
-RUN mkdir -p /docker/build /docker/build/mod_pagespeed
+RUN mkdir -p /docker/build 
 
 ## Add patches
 ADD patch /patch
@@ -71,18 +69,6 @@ RUN apt-get update && apt-get -y install --no-install-recommends $PACKAGES_BUILD
 
 ## Set Git config
 RUN git config --global http.postBuffer 1048576000
-
-## Build PSOL
-WORKDIR /docker/build
-RUN git clone -b latest-stable --recursive https://github.com/pagespeed/mod_pagespeed.git
-WORKDIR /docker/build/mod_pagespeed
-RUN patch -p1 /patch/mod_pagespeed-1453.diff
-RUN patch -p1 /patch/mod_pagespeed-1458.diff
-RUN python build/gyp_chromium --depth=.
-RUN make BUILDTYPE=Release mod_pagespeed_test pagespeed_automatic_test
-#RUN ./out/Release/mod_pagespeed_test
-#RUN ./out/Release/pagespeed_automatic_test
-RUN make AR.host=`pwd`/build/wrappers/ar.sh AR.target=`pwd`/build/wrappers/ar.sh BUILDTYPE=Release
 
 ## ModSecurity: Setup
 WORKDIR /docker/build
@@ -107,10 +93,6 @@ RUN wget http://nginx.org/download/nginx-$(wget -q -O -  http://nginx.org/downlo
 && tar xf nginx-*.tar.gz && rm nginx-*.tar.gz && mv nginx-* nginx \
 && mkdir -p /docker/build/nginx/modules \
 && cd /docker/build/nginx/modules \
-&& git clone https://github.com/kyprizel/testcookie-nginx-module.git ngx_testcookie \
-&& git clone https://github.com/pagespeed/ngx_pagespeed.git \
-&& cd /docker/build/nginx/modules/ngx_pagespeed \
-&& wget $(scripts/format_binary_url.sh PSOL_BINARY_URL) \
 && tar -zxvf *.tar.gz \
 && cd /docker/build/nginx/modules \
 && git clone https://github.com/SpiderLabs/ModSecurity-nginx.git ngx_modsecurity
@@ -136,10 +118,6 @@ ARG NGINX_VER
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="nginxgw" \
       org.label-schema.description="A Custom NGINX build suitable for use as a front-end proxy" \
-      org.label-schema.url="https://hub.docker.com/r/alinuxninja/nginxgw/" \
-      org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/ALinuxNinja/docker-nginxgw/" \
-      org.label-schema.vendor="ALinuxNinja" \
       org.label-schema.version=$NGINX_VER \
       org.label-schema.schema-version="1.0"
 
