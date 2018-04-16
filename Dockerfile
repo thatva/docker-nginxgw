@@ -64,8 +64,8 @@ RUN mkdir -p /docker/build
 #ADD patch /patch
 
 ## Install Packages
-RUN apt-get update && apt-get -y install --no-install-recommends $PACKAGES_BUILD \
-&& rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get -y install --no-install-recommends $PACKAGES_BUILD 
+#&& rm -rf /var/lib/apt/lists/*
 
 ## Set Git config
 RUN git config --global http.postBuffer 1048576000
@@ -105,8 +105,8 @@ RUN make -j$(nproc) \
 
 ## NGINX: Create missing dirs and cleanup
 RUN mkdir -p /var/lib/nginx/body && chown -R www-data:www-data /var/lib/nginx \
-&& strip /usr/sbin/nginx \
-&& strip /usr/lib/libmodsecurity.so.3.0.0
+&& strip /usr/sbin/nginx  \
+&& strip /usr/lib/libmodsecurity.so.3.0.2
 
 FROM ubuntu:xenial
 
@@ -120,7 +120,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0"
 
 ENV PACKAGES_REQUIRED="\
-        libssl1.0.0 \
+        libssl1.0.2 \
         libcurl3 \
         libgeoip1 \
         libyajl2 \
@@ -132,11 +132,11 @@ COPY --from=0 /etc/nginx /etc/nginx
 COPY --from=0 /var/log/nginx /var/log/nginx
 COPY --from=0 /var/lib/nginx /var/lib/nginx
 COPY --from=0 /usr/html /var/www/html
-COPY --from=0 /usr/lib/libmodsecurity.so.3.0.0 /usr/lib/libmodsecurity.so.3.0.0
+COPY --from=0 /usr/lib/libmodsecurity.so.3.0.2 /usr/lib/libmodsecurity.so.3
 
 ## Create Symlinks
-RUN cd /usr/lib \
-&& ln -s libmodsecurity.so.3.0.0 libmodsecurity.so.3
+#RUN cd /usr/lib \
+#&& ln -s libmodsecurity.so.3.0.2 libmodsecurity.so.3
 
 RUN apt-get update && apt-get -y install --no-install-recommends \
         $PACKAGES_REQUIRED \
