@@ -5,7 +5,6 @@ This container is a stripped down version of NGINX optimized for usage as a fron
 
 Additional Modules:
 - Modsecurity (v3)
--
 
 ## Building
 When building, specify the correct NGINX version to build. Automatic version builds are avaliable at Docker Hub, which can be accessed from the badges.
