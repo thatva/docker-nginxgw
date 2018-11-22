@@ -7,9 +7,9 @@ Additional Modules:
 - Modsecurity (v3)
 
 ## Building
-When building, specify the correct NGINX version to build. Automatic version builds are avaliable at Docker Hub, which can be accessed from the badges.
+When building, specify the correct NGINX version to build.
 
 For example:
 ```
-docker build --build-arg NGINX_VER=1.13.0 -t alinuxninja/nginxgw:latest .
+docker build --build-arg NGINX_VER=1.13.0 .
 ```
