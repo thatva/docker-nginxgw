@@ -72,9 +72,9 @@ RUN git config --global http.postBuffer 1048576000
 
 ## ModSecurity: Setup
 WORKDIR /docker/build
-RUN git clone https://github.com/SpiderLabs/ModSecurity \
+RUN git clone https://github.com/airween/ModSecurity.git \
 && cd ModSecurity \
-&& git checkout v3/master \
+&& git checkout v3/issue-1960-2 \
 && git submodule init \
 && git submodule update \
 && ./build.sh
